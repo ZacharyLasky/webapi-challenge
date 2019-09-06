@@ -65,10 +65,10 @@ router.delete("/:id", validateId, (req,res) => {
 //EXTRA (getProjectActions/projectId)
 router.get("/projectId/:id", (req, res) => {
 
-  actionDatabase.get()
-    .then(data => {
-      res.status(200).json(data)
-    })
+  // actionDatabase.get(req.params.id)
+  //   .then(data => {
+  //     res.status(200).json(data)
+  //   })
   projectDatabase.getProjectActions(req.body.project_id)
     .then(actions => {
       res.status(200).json(actions)
@@ -114,8 +114,4 @@ function getActions(req, res, next) {
   next()
 }
  
-
-
-
-
 module.exports = router;

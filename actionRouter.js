@@ -71,5 +71,4 @@ function validatePost(req, res, next) {
   next();
 }
 
-
 module.exports = router;
