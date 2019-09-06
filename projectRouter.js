@@ -52,6 +52,15 @@ router.put("/:id", validateUserId, validatePost, (req, res) => {
 })
 
 //DELETE (DELETE)
+router.delete("/:id", validateUserId, (req,res) => {
+  projectDatabase.remove(req.params.id)
+    .then(project => {
+      res.status(200).json(project)
+    })
+    .catch(error => [
+      res.status(500).json(error)
+    ])
+})
 
 //local custom middleware
 function validateUserId(req, res, next) {
