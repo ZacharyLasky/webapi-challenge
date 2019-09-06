@@ -27,6 +27,15 @@ router.post("/", validatePost, (req,res) => {
 })
 
 //PUT (UPDATE)
+router.put("/:id", validateId, validatePost, (req,res) => {
+  actionDatabase.update(req.params.id, req.body)
+    .then(project => {
+      res.status(200).json(project)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
 
 //DELETE (REMOVE)
 
