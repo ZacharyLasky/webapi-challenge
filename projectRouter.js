@@ -69,14 +69,14 @@ router.get("/projectId/:id", (req, res) => {
   //   .then(data => {
   //     res.status(200).json(data)
   //   })
-  projectDatabase.getProjectActions(req.body.project_id)
+  const projId = req.params.id
+  console.log(projId)
+  projectDatabase.getProjectActions(projId)
     .then(actions => {
       res.status(200).json(actions)
-      console.log(req.body.project_id)
     })
     .catch(error => {
       res.status(500).json(error)
-      console.log(req.body.project_id)
     })
 })
 
