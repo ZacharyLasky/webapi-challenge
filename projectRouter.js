@@ -5,7 +5,7 @@ const actionDatabase = require("./data/helpers/actionModel");
 
 //CRUD ACTIONS BELOW
 
-//POST(CREATE)
+//POST / (CREATE)
 router.post("/", validatePost, (req,res) => {
   projectDatabase.insert(req.body)
     .then(project => {
@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
 })
 
 //GET /:id (READ)
-router.get("/:id", validateUserId, (req, res) => {
+router.get("/:id", validateId, (req, res) => {
   projectDatabase
     .get(req.params.id)
       .then(user => {
@@ -41,7 +41,7 @@ router.get("/:id", validateUserId, (req, res) => {
 })
 
 //PUT (UPDATE)
-router.put("/:id", validateUserId, validatePost, (req, res) => {
+router.put("/:id", validateId, validatePost, (req, res) => {
   projectDatabase.update(req.params.id, req.body)
     .then(project => {
       res.status(200).json(project)
@@ -52,7 +52,7 @@ router.put("/:id", validateUserId, validatePost, (req, res) => {
 })
 
 //DELETE (DELETE)
-router.delete("/:id", validateUserId, (req,res) => {
+router.delete("/:id", validateId, (req,res) => {
   projectDatabase.remove(req.params.id)
     .then(project => {
       res.status(200).json(project)
@@ -62,8 +62,26 @@ router.delete("/:id", validateUserId, (req,res) => {
     ])
 })
 
+//EXTRA (getProjectActions/projectId)
+router.get("/projectId/:id", (req, res) => {
+
+  actionDatabase.get()
+    .then(data => {
+      res.status(200).json(data)
+    })
+  projectDatabase.getProjectActions(req.body.project_id)
+    .then(actions => {
+      res.status(200).json(actions)
+      console.log(req.body.project_id)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+      console.log(req.body.project_id)
+    })
+})
+
 //local custom middleware
-function validateUserId(req, res, next) {
+function validateId(req, res, next) {
   projectDatabase.get(req.params.id) 
    .then(user => {
      if (user) {
@@ -84,6 +102,19 @@ function validatePost(req, res, next) {
   }
   next();
 }
+
+function getActions(req, res, next) {
+  actionDatabase.get() 
+    .then(data => {
+      res.status(200).json(data)
+    })
+    .catch(error => {
+      res.status(404).json(error)
+    })
+  next()
+}
+ 
+
 
 
 
