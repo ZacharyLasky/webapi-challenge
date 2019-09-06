@@ -30,7 +30,7 @@ router.post("/", validatePost, (req,res) => {
 router.put("/:id", validateId, validatePost, (req,res) => {
   actionDatabase.update(req.params.id, req.body)
     .then(project => {
-      res.status(200).json(project)
+      res.status(201).json(project)
     })
     .catch(error => {
       res.status(500).json(error)
@@ -38,7 +38,15 @@ router.put("/:id", validateId, validatePost, (req,res) => {
 })
 
 //DELETE (REMOVE)
-
+router.delete("/:id", validateId, (req,res) => {
+  actionDatabase.remove(req.params.id)
+    .then(action => {
+      res.status(200).json(action)
+    })
+    .catch(error => {
+      res.status(500).json({message: error})
+    })
+})
 
 //local custom middleware
 function validateId(req, res, next) {
